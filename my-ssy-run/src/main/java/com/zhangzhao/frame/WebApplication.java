@@ -6,10 +6,12 @@
 package com.zhangzhao.frame;
 
 //import org.mybatis.spring.annotation.MapperScan;
+import com.zhangzhao.frame.config.FinalConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import tk.mybatis.spring.annotation.MapperScan;
 //import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
@@ -18,7 +20,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 @SpringBootApplication
 //@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60000)
-//@MapperScan(FinalConfig.MAPPER_SCAN_BASE_PACKAGE)
+@MapperScan(FinalConfig.MAPPER_SCAN_BASE_PACKAGE)
 public class WebApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
