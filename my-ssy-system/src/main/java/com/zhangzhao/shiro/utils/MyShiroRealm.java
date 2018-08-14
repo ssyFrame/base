@@ -1,5 +1,9 @@
 package com.zhangzhao.shiro.utils;
 
+import com.zhangzhao.frame.model.SysPermission;
+import com.zhangzhao.frame.model.SysRole;
+import com.zhangzhao.frame.model.SysUser;
+import com.zhangzhao.frame.service.SysUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -15,14 +19,15 @@ import javax.annotation.Resource;
  * 登录权限验证类
  */
 public class MyShiroRealm extends AuthorizingRealm {
+
     @Resource
-    private UserInfoService userInfoService;
+    private SysUserService sysUserService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 //        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
+        SysUser userInfo = (SysUser) principals.getPrimaryPrincipal();
         for (SysRole role : userInfo.getRoleList()) {
             authorizationInfo.addRole(role.getRole());
             for (SysPermission p : role.getPermissions()) {
@@ -42,7 +47,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 //        System.out.println(token.getCredentials());
         //通过username从数据库中查找 User对象，如果找到，没找到.
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        UserInfo userInfo = userInfoService.findByUsername(username);
+        SysUser userInfo = sysUserService.findByUsername(username);
 //        System.out.println("----->>userInfo="+userInfo);
         if (userInfo == null) {
             return null;

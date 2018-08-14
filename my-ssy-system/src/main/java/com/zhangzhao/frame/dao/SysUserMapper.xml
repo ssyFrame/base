@@ -5,13 +5,46 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="age" jdbcType="INTEGER" property="age" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="l_id" jdbcType="INTEGER" property="id" />
+    <result column="vc_name" jdbcType="VARCHAR" property="name" />
+    <result column="vc_age" jdbcType="INTEGER" property="age" />
+    <result column="vc_username" jdbcType="VARCHAR" property="username" />
+    <result column="vc_password" jdbcType="VARCHAR" property="password" />
+    <result column="vc_salt" jdbcType="VARCHAR" property="salt" />
+    <result column="vc_state" jdbcType="VARCHAR" property="state"/>
+    <result column="vc_createDate" jdbcType="VARCHAR" property="createDate"/>
+    <result column="vc_createUser" jdbcType="VARCHAR" property="createUser"/>
+    <result column="vc_updateDate" jdbcType="VARCHAR" property="updateDate"/>
+    <result column="vc_updateUser" jdbcType="VARCHAR" property="updateUser"/>
   </resultMap>
 
+  <insert id="insertUser" parameterType="com.zhangzhao.frame.model.SysUser" >
+      insert into sys_user (
+      vc_name,vc_age,vc_username,vc_password,vc_salt,vc_state,
+      vc_createDate,vc_createUser,vc_updateDate,vc_updateUser)
+      values (
+        #name#,
+        #age#,
+        #username#,
+        #password#,
+        #salt#,
+        #state#,
+        #createDate#,
+        #createUser#,
+        #updateDate#,
+        #updateUser#,
+      )
 
+  </insert>
+
+  <select id="findByUsername" parameterType="String" resultType="com.zhangzhao.frame.model.SysUser">
+      select
+        l_id,
+        vc_username,
+        vc_password,
+        vc_state
+      from sys_user
+      where vc_username = #username#
+  </select>
 
 </mapper>

@@ -1,8 +1,9 @@
-package com.zhangzhao.frame;
+package com.zhangzhao;
 
 import com.zhangzhao.frame.config.FinalConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -10,6 +11,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication
 //@EnableRedisHttpSession
+@ComponentScan(value = {"com.zhangzhao.frame","com.zhangzhao.shiro.utils"})
 @MapperScan(FinalConfig.MAPPER_SCAN_BASE_PACKAGE)
 public class Application
 {

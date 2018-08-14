@@ -9,4 +9,6 @@ import com.zhangzhao.frame.model.SysUser;
 public interface SysUserService {
 
     public void saveUser(SysUser sysUser);
+
+    public SysUser findByUsername(String username);
 }
