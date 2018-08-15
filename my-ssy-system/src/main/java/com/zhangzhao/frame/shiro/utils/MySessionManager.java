@@ -1,4 +1,4 @@
-package com.zhangzhao.shiro.utils;
+package com.zhangzhao.frame.shiro.utils;
 
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;

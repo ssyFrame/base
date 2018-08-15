@@ -1,4 +1,4 @@
-package com.zhangzhao.shiro.utils;
+package com.zhangzhao.frame.shiro.utils;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import org.apache.shiro.authz.UnauthenticatedException;

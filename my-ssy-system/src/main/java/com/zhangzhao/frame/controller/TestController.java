@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class TestController {
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/unauth")
     public String index(){
         return "login";
     }

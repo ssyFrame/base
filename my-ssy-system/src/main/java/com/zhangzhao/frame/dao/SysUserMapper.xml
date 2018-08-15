@@ -23,28 +23,28 @@
       vc_name,vc_age,vc_username,vc_password,vc_salt,vc_state,
       vc_createDate,vc_createUser,vc_updateDate,vc_updateUser)
       values (
-        #name#,
-        #age#,
-        #username#,
-        #password#,
-        #salt#,
-        #state#,
-        #createDate#,
-        #createUser#,
-        #updateDate#,
-        #updateUser#,
+        #{name},
+        #{age},
+        #{username},
+        #{password},
+        #{salt},
+        #{state},
+        #{createDate},
+        #{createUser},
+        #{updateDate},
+        #{updateUser}
       )
 
   </insert>
 
   <select id="findByUsername" parameterType="String" resultType="com.zhangzhao.frame.model.SysUser">
       select
-        l_id,
-        vc_username,
-        vc_password,
-        vc_state
+        l_id as id,
+        vc_username as username,
+        vc_password as password,
+        vc_state as state
       from sys_user
-      where vc_username = #username#
+      where vc_username = #{username}
   </select>
 
 </mapper>

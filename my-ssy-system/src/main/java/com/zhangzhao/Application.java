@@ -11,7 +11,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication
 //@EnableRedisHttpSession
-@ComponentScan(value = {"com.zhangzhao.frame","com.zhangzhao.shiro.utils"})
+@ComponentScan
 @MapperScan(FinalConfig.MAPPER_SCAN_BASE_PACKAGE)
 public class Application
 {

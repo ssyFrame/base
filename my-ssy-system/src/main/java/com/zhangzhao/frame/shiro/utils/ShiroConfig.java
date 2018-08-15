@@ -1,4 +1,4 @@
-package com.zhangzhao.shiro.utils;
+package com.zhangzhao.frame.shiro.utils;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -10,12 +10,10 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
@@ -36,10 +34,10 @@ public class ShiroConfig {
     @Value("${spring.redis.shiro.password}")
     private String password;
 
-    @Bean
+    @Bean(name="shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        System.out.println("ShiroConfiguration.shirFilter()");
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        System.out.println("starting ShiroConfiguration------");
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new MyShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
@@ -47,9 +45,10 @@ public class ShiroConfig {
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
         filterChainDefinitionMap.put("/logout", "logout");
         // 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/ajaxLogin", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/getAjax", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
         shiroFilterFactoryBean.setLoginUrl("/unauth");
@@ -58,10 +57,11 @@ public class ShiroConfig {
         //未授权界面;
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        System.out.println("ending ShiroConfiguration------");
         return shiroFilterFactoryBean;
     }
 
-    @Bean
+    @Bean(name="myShiroRealm")
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
@@ -85,9 +85,9 @@ public class ShiroConfig {
 
 
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(@Qualifier("myShiroRealm")MyShiroRealm MyShiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(myShiroRealm());
+        securityManager.setRealm(MyShiroRealm);
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());
         // 自定义缓存实现 使用redis

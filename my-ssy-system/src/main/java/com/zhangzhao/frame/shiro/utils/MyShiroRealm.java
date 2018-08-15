@@ -1,4 +1,4 @@
-package com.zhangzhao.shiro.utils;
+package com.zhangzhao.frame.shiro.utils;
 
 import com.zhangzhao.frame.model.SysPermission;
 import com.zhangzhao.frame.model.SysRole;
