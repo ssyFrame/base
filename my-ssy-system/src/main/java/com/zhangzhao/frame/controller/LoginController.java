@@ -2,6 +2,7 @@ package com.zhangzhao.frame.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhangzhao.frame.model.SysUser;
+import com.zhangzhao.frame.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -10,10 +11,17 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+
+/**
+ *
+ */
 @RestController
 @CrossOrigin
 public class LoginController {
 
+    @Resource
+    private SysUserService sysUserService;
     /**
      * 登录方法
      * @param userInfo
@@ -37,6 +45,24 @@ public class LoginController {
             jsonObject.put("msg", "该用户不存在");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
+
+    /**
+     * 注册接口
+     * @param sysUser
+     * @return
+     */
+    @RequestMapping(value = "/registor", method = RequestMethod.POST)
+    @ResponseBody
+    public String registor(SysUser sysUser){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            sysUserService.saveUser(sysUser);
+            jsonObject.put("msg", "注册成功");
+        } catch (Exception e) {
+            jsonObject.put("msg", "注册失败");
         }
         return jsonObject.toString();
     }

@@ -52,14 +52,20 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (userInfo == null) {
             return null;
         }
-        if (userInfo.getState() == 1) { //账户冻结
+        //账户冻结
+        if (userInfo.getState() == 1) {
             throw new LockedAccountException();
         }
+
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                userInfo, //用户名
-                userInfo.getPassword(), //密码
-                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),//salt=username+salt
-                getName()  //realm name
+                //用户名
+                userInfo.getUsername(),
+                //密码
+                userInfo.getPassword(),
+                //salt=username
+                ByteSource.Util.bytes(username),
+                //realm name
+                this.getName()
         );
         return authenticationInfo;
     }
