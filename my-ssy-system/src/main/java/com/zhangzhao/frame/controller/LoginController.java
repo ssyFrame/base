@@ -66,4 +66,22 @@ public class LoginController {
         }
         return jsonObject.toString();
     }
+
+    /**
+     * 测试数据
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public String test(){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            sysUserService.findByUsername("admin");
+            jsonObject.put("msg", "测试成功");
+        } catch (Exception e) {
+            jsonObject.put("msg", "测试失败");
+        }
+        return jsonObject.toString();
+    }
 }

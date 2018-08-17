@@ -1,5 +1,6 @@
 package com.zhangzhao.frame.shiro.utils;
 
+import com.zhangzhao.frame.config.FinalConfig;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.session.mgt.SessionManager;
 
@@ -12,8 +13,12 @@ import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
@@ -37,7 +42,7 @@ public class ShiroConfig {
     @Bean(name="shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         System.out.println("starting ShiroConfiguration------");
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new MyShiroFilterFactoryBean();
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
@@ -47,8 +52,11 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
+        //登录
         filterChainDefinitionMap.put("/ajaxLogin", "anon");
+        //注册
         filterChainDefinitionMap.put("/registor", "anon");
+//        filterChainDefinitionMap.put("/test", "anon");
         filterChainDefinitionMap.put("/getAjax", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
@@ -80,13 +88,13 @@ public class ShiroConfig {
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(FinalConfig.HASH_ITERATIONS);//散列的次数，比如散列两次，相当于 md5(md5(""));
         return hashedCredentialsMatcher;
     }
 
 
     @Bean
-    public SecurityManager securityManager(@Qualifier("myShiroRealm")MyShiroRealm MyShiroRealm) {
+    public SecurityManager securityManager(MyShiroRealm MyShiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(MyShiroRealm);
         // 自定义session管理 使用redis

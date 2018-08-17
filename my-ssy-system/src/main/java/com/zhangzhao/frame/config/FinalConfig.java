@@ -19,5 +19,6 @@ public class FinalConfig {
     public final static String I18N_MESSAGE = "messages";
 
     public final static String FILE_TYPE_DEFALULT = "default";
+    public final static int    HASH_ITERATIONS = 1024;
     
 }
